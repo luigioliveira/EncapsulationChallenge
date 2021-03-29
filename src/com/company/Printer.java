@@ -6,11 +6,17 @@ public class Printer {
     private double spoolStorage;
     private boolean duplexPrintingCapability;
 
-    public Printer(double tonerLevel, double numberOfPagesPrinted, double spoolStorage, boolean duplexPrintingCapability) {
-        this.tonerLevel = tonerLevel;
-        this.numberOfPagesPrinted = numberOfPagesPrinted;
-        this.spoolStorage = spoolStorage;
-        this.duplexPrintingCapability = duplexPrintingCapability;
+    public Printer(double tonerLevel, boolean duplexPrintingCapability) {
+        if (tonerLevel >= 0 && tonerLevel <= 100) {
+            this.tonerLevel = tonerLevel;
+        } else {
+            System.out.println("Invalid toner level. Code (-1)");
+            this.tonerLevel = -1;
+        }
+
+        this.numberOfPagesPrinted = 0;
+        this.spoolStorage = 0;
+        this.duplexPrintingCapability = true;
     }
 
     public void fillToner(double inkAmount) {
@@ -21,21 +27,27 @@ public class Printer {
     }
 
     public void printPage(int pages, double sizeFile, String documentName, boolean isDuplexPrint) {
-        // Case 1: printer prints documents.
+        // Code fix: duplex printing = 1 paper.
+        // Case 1: printer prints documents. [ok]
 
 
         if (tonerLevel > pages) { // each 1 page = (equivalent) 1% toner
-                    numberOfPagesPrinted += pages;
+
                     spoolStorage = sizeFile;
                     System.out.println("Printing doc: " + documentName);
 
                     // Internal Case A: Document is printing front and back, and printer has duplex printing capabilites.
-                        if ((isDuplexPrint == true) && (duplexPrintingCapability == true)) {
-                    System.out.println("Duplex printing send!");
-                        } else if ((isDuplexPrint == true) && (duplexPrintingCapability == false)) { // Internal case B: Document is printing front and back and printer DOESN'T HAVE duplex printing capabilites.
+                        if ((isDuplexPrint && duplexPrintingCapability)) {
+                    System.out.println("Duplex print send!");
+                        } else if ((isDuplexPrint) && !duplexPrintingCapability) { // Internal case B: Document is printing front and back and printer DOESN'T HAVE duplex printing capabilites.
                     System.out.println("Sorry, the printer is not duplex.");
-                        } else {
-                    } // Internal Case C : printing is not duplex - no action need.
+                        } // Internal Case C : printing is not duplex - no action need.
+
+                    if (isDuplexPrint && duplexPrintingCapability) {
+                    numberOfPagesPrinted += ((pages / 2) + (pages % 2));
+                    } else {
+                        numberOfPagesPrinted += pages;
+                    }
 
                     tonerLevel -= pages; // waste ink.
                     System.out.println("Beep! Done."); // Job completed.

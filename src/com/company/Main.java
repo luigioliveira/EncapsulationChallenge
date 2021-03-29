@@ -3,7 +3,7 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        Printer printer = new Printer(50.0, 0, 0, true);
+        Printer printer = new Printer(-1, true);
 
         // case 1 - fill ink with 10 - see results.
         // case 2 - fill ink with 60 - see 100 on results.
@@ -19,10 +19,10 @@ public class Main {
         printer.fillToner(60); //C2
         System.out.println("toner level: " + printer.getTonerLevel());
 
-        printer.printPage(12, 480, "Document1.txt", true); //C3
+        printer.printPage(7, 480, "Document1.txt", true); //C3
 
         printer.setDuplexPrintingCapability(false); //C4
-        printer.printPage(8, 60, "Document2.txt", true);
+        printer.printPage(6, 60, "Document2.txt", true);
 
         printer.setTonerLevel(0); //C5
         printer.printPage(50, 3500, "Document3.txt", true);
